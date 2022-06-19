@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ToDoアプリ</title>
+</head>
+    <body>
+        <h1>タスク登録</h1>
+    	<p> 登録したいタスクの情報をいれてください。 </p>
+    	<form method="post" action ="/tasks">    	
+    		<input type="text" name ="task_id"/>
+    		<input type="text" name ="user_id"/>
+    		<input type="text" name ="task_name"/>
+    		<input type="text" name ="status"/>
+    		<input type="text" name ="deadline"/>
+    		<input type="submit" value="登録"/>    		
+    	</form>
+    	
+    	<h1>タスク一覧</h1>
+    	<p> 登録済みタスクの一覧を出力します。 </p>
+    	<table>
+    		<tr>
+    			<th>タスクID</th><th>ユーザID</th><th>タスク名</th><th>ステータス</th><th>締切日</th>
+    		</tr>
+    		<tr>
+    			<td>3</td><td>1</td><td>"send file"</td><td>new</td><td>20202-12-01</td>
+    		</tr>    		
+    	</table>		
+    </body>
+</html>

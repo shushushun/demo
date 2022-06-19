@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ToDoアプリ</title>
+</head>
+    <body>
+        <h1>ユーザ登録</h1>
+    	<p> 登録したいユーザの情報をいれてください。 </p>
+    	<form method="post" action ="/nameFromForm">    	
+    		<input type="text" name ="user_id"/>
+    		<input type="text" name ="user_name"/>
+    		<input type="text" name ="department"/>
+    		<input type="submit" value="登録"/>    		
+    	</form>
+    	
+    	<h1>ユーザ一覧</h1>
+    	<p> 登録済みユーザの一覧を出力します。 </p>
+    	<table>
+    		<tr>
+    			<th>ユーザID</th><th>名前</th><th>所属</th>
+    		</tr>
+    		<tr>
+    			<td>3</td><td>Chris</td><td>finance</td>
+    		</tr>    		
+    	</table>		
+    </body>
+</html>
