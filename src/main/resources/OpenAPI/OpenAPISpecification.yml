@@ -14,17 +14,17 @@ paths:
       tags:
         - users
       summary: Get all users.
-      description: Returns an array of Employee model
+      description: Returns an array of User model
       parameters: []
       responses: # レスポンス定義
         '200': # HTTP status
-          description: A JSON array of Employee model
+          description: A JSON array of User model
           content:
             application/json: # レスポンスの形式指定
               schema: 
                 type: array
                 items:
-                  $ref: '#/components/schemas/Employee' # 参照するモデル
+                  $ref: '#/components/schemas/User' # 参照するモデル
                 example: # サンプルデータ
                   - user_id: 1
                     user_name: Alice
@@ -32,10 +32,23 @@ paths:
                   - id: 2
                     name: Bob
                     department: sales
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+                    
     post: # POST
       tags: 
         - users
-      summary: Create a new Employee
+      summary: Create a new User
       description: Create a new User
       parameters: []
       requestBody: # リクエストボディ
@@ -43,14 +56,25 @@ paths:
         content:
           application/json:
             schema: # POSTするオブジェクト
-              $ref: '#/components/schemas/Employee'
+              type: object
             example:
-              id: 3
               name: Chris
               department: Finance
       responses:
         '201':
           description: CREATED
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
 
   /tasks:
@@ -82,6 +106,18 @@ paths:
                     task_name: send files
                     status: not yet
                     deadline: 2022-09-30
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     post: # POST
       tags: 
         - tasks
@@ -93,7 +129,7 @@ paths:
         content:
           application/json:
             schema: # POSTするオブジェクト
-              $ref: '#/components/schemas/Task'
+              type: object
             example:
               task_id: 3
               user_id: 1
@@ -103,15 +139,27 @@ paths:
       responses:
         '201':
           description: CREATED
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
           
-  /tasks/{userId}:
+  /user/{user_id}/tasks:
     get:
       tags:
         - taskSummary
-      summary: Get tasks by user ID.
-      description: Returns a single TaskSummary
+      summary: Get tasks by user_id.
+      description: Returns a single Task_summary
       parameters: # リクエストパラメータ
-        - name: userId
+        - name: user_id
           in: path # パラメータをパス内に含める
           description: user id
           required: true
@@ -119,24 +167,37 @@ paths:
             type: integer
       responses:
         '200':
-          description: A single TaskSummary model
+          description: A single Task_summary model
           content:
             application/json:
               schema: 
                 type: object
                 items:
-                  $ref: '#/components/schemas/TaskSummary'
+                  $ref: '#/components/schemas/Task_summary'
                 example:
                   user_name: Alice
                   department: human resources
                   task_name: make slides
                   status: not yet
                   deadline: 2022-9-30
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        
                   
                   
 components:
   schemas: # スキーマオブジェクトの定義
-    Employee: # モデル名
+    User: # モデル名
       type: object # 型
       required: # 必須フィールド
         - user_id
@@ -178,7 +239,7 @@ components:
           
           
     
-    TaskSummary:
+    Task_summary:
       type: object
       required:
         - user_name
@@ -202,4 +263,24 @@ components:
         deadline:
           type: string
           example: 2022-06-16
+          
+    Error:
+      type: object
+      title: Error
+      description: エラーオブジェクトの共通スキーマ
+      properties:
+        state:
+          type: string
+          description: エラーの種別
+          example: TodoNotFound
+          maxLength: 255
+        message:
+          type: string
+          description: エラーメッセージ
+          maxLength: 255
+          example: Todoが1件も存在しません
+          readOnly: true
+      required:
+        - state
+        - message
           
