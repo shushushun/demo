@@ -29,7 +29,7 @@ paths:
                   - user_id: 1
                     user_name: Alice
                     department: human resources
-                  - id: 2
+                  - user_id: 2
                     name: Bob
                     department: sales
         '404':
@@ -50,25 +50,29 @@ paths:
         - users
       summary: Create a new User
       description: Create a new User
-      parameters: []
+      parameters: 
+        - in: query
+          name: user_name
+          schema:
+            type: string
+          description: user name
+        - in: query
+          name: department
+          schema:
+            type: string
+          description: user's belonging
       requestBody: # リクエストボディ
         description: user to create
         content:
           application/json:
             schema: # POSTするオブジェクト
               type: object
-            example:
+            example: 
               name: Chris
               department: Finance
       responses:
         '201':
           description: CREATED
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
         '500':
           description: Internal Server Error
           content:
@@ -123,7 +127,27 @@ paths:
         - tasks
       summary: Create a new Task
       description: Create a new Task
-      parameters: []
+      parameters: 
+        - in: query
+          name: user_id
+          schema:
+            type: integer
+          description: the owner's id of the task
+        - in: query
+          name: task_name
+          schema:
+            type: string
+          description: task name
+        - in: query
+          name: status
+          schema:
+            type: string
+          description: status
+        - in: query
+          name: deadline
+          schema:
+            type: string
+          description: deadline
       requestBody: # リクエストボディ
         description: task to create
         content:
@@ -131,7 +155,6 @@ paths:
             schema: # POSTするオブジェクト
               type: object
             example:
-              task_id: 3
               user_id: 1
               task_name: send file
               status: new
@@ -139,12 +162,6 @@ paths:
       responses:
         '201':
           description: CREATED
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
         '500':
           description: Internal Server Error
           content:
@@ -152,12 +169,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           
-  /user/{user_id}/tasks:
+  /users/{user_id}/tasks:
     get:
       tags:
         - taskSummary
       summary: Get tasks by user_id.
-      description: Returns a single Task_summary
+      description: Returns an array of Task_summary
       parameters: # リクエストパラメータ
         - name: user_id
           in: path # パラメータをパス内に含める
@@ -219,6 +236,7 @@ components:
       type: object
       required:
         - task_id
+        - user_id
         - task_name
         - status
         - deadline
@@ -227,6 +245,10 @@ components:
           type: integer
           format: int64
           example : 1
+        user_id:
+          type: integer
+          format: int64
+          example: 1
         task_name:
           type: string
           example: make slides
