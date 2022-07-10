@@ -188,15 +188,20 @@ paths:
           content:
             application/json:
               schema: 
-                type: object
+                type: array
                 items:
                   $ref: '#/components/schemas/Task_summary'
                 example:
-                  user_name: Alice
-                  department: human resources
-                  task_name: make slides
-                  status: not yet
-                  deadline: 2022-9-30
+                  - user_name: Alice
+                    department: human resources
+                    task_name: make slides
+                    status: not yet
+                    deadline: 2022-9-30
+                  - user_name: Alice
+                    department: human resources
+                    task_name: send slides
+                    status: not yet
+                    deadline: 2022-10-30
         '404':
           description: Not Found
           content:
